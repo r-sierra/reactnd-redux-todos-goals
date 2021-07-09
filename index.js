@@ -26,7 +26,7 @@ function createStore(reducer) {
   }
 
   return {
-    getStore,
+    getState,
     subscribe,
     dispatch
   }
@@ -34,6 +34,7 @@ function createStore(reducer) {
 
 // App Code
 
+// Todos reducer
 function todos(state = [], action) {
   switch(action.type) {
     case 'ADD_TODO':
@@ -48,6 +49,7 @@ function todos(state = [], action) {
   }
 }
 
+// Goals reducer
 function goals(state = [], action) {
   switch (action.type) {
     case 'ADD_GOAL':
@@ -59,7 +61,15 @@ function goals(state = [], action) {
   }
 }
 
-let store = createStore(todos)
+// Root reducer
+function app(state = {}, action) {
+  return {
+    todos: todos(state.todos, action),
+    goals: goals(state.goals, action)
+  }
+}
+
+let store = createStore(app)
 store.subscribe(() => {
   console.log('The new state is ', store.getState())
 })
