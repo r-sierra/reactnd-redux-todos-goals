@@ -35,11 +35,17 @@ function createStore(reducer) {
 // App Code
 
 function todos(state = [], action) {
-  // reducer function
-  if (action.type == 'ADD_TODO') {
-    return state.concat([action.todo])
+  switch(action.type) {
+    case 'ADD_TODO':
+      return state.concat([action.todo])
+    case 'REMOVE_TODO'  :
+      return state.filter((todo) => todo.id !== action.id)
+    case 'TOOGLE_TODO':
+      return state.map((todo) => todo.id !== action.id ? todo :
+        Object.assign({}, todo, { complete: !todo.complete }))
+    default:
+      return state
   }
-  return state
 }
 
 let store = createStore(todos)
@@ -56,6 +62,6 @@ store.dispatch({
   todo: {
     id: 0,
     name: 'Learn Redux',
-    done: false
+    complete: false
   }
 })
