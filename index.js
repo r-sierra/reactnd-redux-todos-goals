@@ -39,6 +39,42 @@ const TOOGLE_TODO = 'TOOGLE_TODO'
 const ADD_GOAL = 'ADD_GOAL'
 const REMOVE_GOAL = 'REMOVE_GOAL'
 
+// Action creators
+function addTodoAction(todo) {
+  return {
+    type: ADD_TODO,
+    todo,
+  }
+}
+
+function removeTodoAction(id) {
+  return {
+    type: REMOVE_TODO,
+    id,
+  }
+}
+
+function toogleTodoAction(id) {
+  return {
+    type: TOOGLE_TODO,
+    id,
+  }
+}
+
+function addGoalAction(goal) {
+  return {
+    type: ADD_GOAL,
+    goal,
+  }
+}
+
+function removeGoalAction(id) {
+  return {
+    type: REMOVE_GOAL,
+    id,
+  }
+}
+
 // Todos reducer
 function todos(state = [], action) {
   switch(action.type) {
@@ -79,53 +115,36 @@ store.subscribe(() => {
   console.log('The new state is ', store.getState())
 })
 
-const unsubscribe = store.subscribe(() => {
-  console.log('The state has changed.')
-})
-
-store.dispatch({
-  type: ADD_TODO,
-  todo: {
-    id: 0,
-    name: 'Learn Redux',
-    complete: false
-  }
-})
-
-store.dispatch({
-  type: ADD_TODO,
-  todo: {
-    id: 1,
-    name: 'Learn React Native',
-    complete: false
-  }
-})
-
-store.dispatch({
-  type: ADD_TODO,
-  todo: {
-    id: 2,
-    name: 'Learn brewing',
-    complete: false
-  }
-})
-
-store.dispatch({
-  type: TOOGLE_TODO,
+store.dispatch(addTodoAction({
   id: 0,
-})
+  name: 'Learn Redux',
+  complete: false
+}))
 
-store.dispatch({
-  type: REMOVE_TODO,
+store.dispatch(addTodoAction({
+  id: 1,
+  name: 'Learn React Native',
+  complete: false
+}))
+
+store.dispatch(addTodoAction({
   id: 2,
-})
+  name: 'Learn brewing',
+  complete: false
+}))
 
-store.dispatch({
-  type: ADD_GOAL,
-  goal: {
-    id: 0,
-    name: 'Finish React ND Course',
-    complete: false
-  }
-})
+store.dispatch(toogleTodoAction(0))
 
+store.dispatch(removeTodoAction(2))
+
+store.dispatch(addGoalAction({
+  id: 0,
+  name: 'Finish React ND Course',
+}))
+
+store.dispatch(addGoalAction({
+  id: 1,
+  name: 'Start new ND Course',
+}))
+
+store.dispatch(removeGoalAction(0))
