@@ -91,3 +91,41 @@ store.dispatch({
     complete: false
   }
 })
+
+store.dispatch({
+  type: ADD_TODO,
+  todo: {
+    id: 1,
+    name: 'Learn React Native',
+    complete: false
+  }
+})
+
+store.dispatch({
+  type: ADD_TODO,
+  todo: {
+    id: 2,
+    name: 'Learn brewing',
+    complete: false
+  }
+})
+
+store.dispatch({
+  type: TOOGLE_TODO,
+  id: 0,
+})
+
+store.dispatch({
+  type: REMOVE_TODO,
+  id: 2,
+})
+
+store.dispatch({
+  type: ADD_GOAL,
+  goal: {
+    id: 0,
+    name: 'Finish React ND Course',
+    complete: false
+  }
+})
+
