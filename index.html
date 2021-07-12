@@ -94,18 +94,21 @@
       }
     }
 
-    // Root reducer
-    // function app(state = {}, action) {
-    //   return {
-    //     todos: todos(state.todos, action),
-    //     goals: goals(state.goals, action)
-    //   }
-    // }
+    // middleware function
+    const checker = (store) => (next) => (action) => {
+      if (action.type === ADD_TODO || action.type === ADD_GOAL) {
+        var name = action.todo ? action.todo.name : action.goal.name
+        if (name.toLowerCase().includes('kill'))
+          return alert('No killing allowed!')
+      }
+      return next(action)  // next middleware or dispatch
+    }
 
-    let store = Redux.createStore(Redux.combineReducers({
+    const rootReducer = Redux.combineReducers({
       todos,
       goals
-    }))
+    })
+    let store = Redux.createStore(rootReducer, Redux.applyMiddleware(checker))
 
     store.subscribe(() => {
       const { todos, goals } = store.getState()
