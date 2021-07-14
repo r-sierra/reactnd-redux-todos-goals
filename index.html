@@ -183,6 +183,12 @@
       removeItem = (todo) => {
         const { store } = this.props
         store.dispatch(removeTodoAction(todo.id))
+
+        return API.deleteTodo(todo.id)
+          .catch(() => {
+            store.dispatch(addTodoAction(todo))
+            alert('An error ocurred. Try again.')
+          })
       }
 
       toggleItem = (todo) => {
@@ -226,6 +232,12 @@
       removeItem = (goal) => {
         const { store } = this.props
         store.dispatch(removeGoalAction(goal.id))
+
+        return API.deleteGoal(goal.id)
+          .catch(() => {
+            store.dispatch(addGoalAction(goal))
+            alert('An error ocurred. Try again.')
+          })
       }
 
       render() {
