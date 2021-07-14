@@ -69,6 +69,18 @@
       }
     }
 
+    function asyncRemoveTodoAction(todo) {
+        return (dispatch) => {
+          dispatch(removeTodoAction(todo.id))
+
+          return API.deleteTodo(todo.id)
+            .catch(() => {
+              dispatch(addTodoAction(todo))
+              alert('An error ocurred. Try again.')
+            })
+        }
+    }
+
     // Todos reducer
     function todos(state = [], action) {
       switch(action.type) {
@@ -100,6 +112,7 @@
       }
     }
 
+    // Loading state reducer
     function loading(state = true, action) {
       switch(action.type) {
         case RECEIVE_DATA:
@@ -134,6 +147,19 @@
       return result
     }
 
+    // In computer programming, a thunk is a subroutine used to inject an
+    // additional calculation into another subroutine. Thunks are primarily
+    // used to delay a calculation until its result is needed, or to insert
+    // operations at the beginning or end of the other subroutine.
+    //
+    // Source: https://en.wikipedia.org/wiki/Thunk
+    const thunk = (store) => (next) => (action) => {
+      if (typeof action === 'function')
+        return action(store.dispatch)
+
+      return next(action)
+    }
+
     const rootReducer = Redux.combineReducers({
       todos,
       goals,
@@ -142,7 +168,7 @@
 
     let store = Redux.createStore(
       rootReducer,
-      Redux.applyMiddleware(checker, logger)
+      Redux.applyMiddleware(thunk, checker, logger)
     )
   </script>
 
@@ -183,13 +209,7 @@
 
       removeItem = (todo) => {
         const { store } = this.props
-        store.dispatch(removeTodoAction(todo.id))
-
-        return API.deleteTodo(todo.id)
-          .catch(() => {
-            store.dispatch(addTodoAction(todo))
-            alert('An error ocurred. Try again.')
-          })
+        store.dispatch(asyncRemoveTodoAction(todo))
       }
 
       toggleItem = (todo) => {
