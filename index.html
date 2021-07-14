@@ -194,6 +194,12 @@
       toggleItem = (todo) => {
         const { store } = this.props
         store.dispatch(toogleTodoAction(todo.id))
+
+        return API.saveTodoToggle(todo.id)
+          .catch(() => {
+            store.dispatch(toogleTodoAction(todo.id))
+            alert('An error ocurred. Try again.')
+          })
       }
 
       render() {
