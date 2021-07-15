@@ -82,6 +82,31 @@
         }
     }
 
+    function asyncAddGoalAction(name, callback) {
+      return (dispatch) => {
+        return API.saveGoal(name)
+          .then((goal) => {
+            dispatch(addGoalAction(goal))
+            callback()
+          })
+          .catch(() => {
+            alert('An error ocurred. Try again.')
+          })
+      }
+    }
+
+    function asyncRemoveGoalAction(goal) {
+      return (dispatch) => {
+        dispatch(removeGoalAction(goal.id))
+
+        return API.deleteGoal(goal.id)
+          .catch(() => {
+            dispatch(addGoalAction(goal))
+            alert('An error ocurred. Try again.')
+          })
+      }
+    }
+
     // Todos reducer
     function todos(state = [], action) {
       switch(action.type) {
@@ -236,25 +261,16 @@
       addItem = (event) => {
         event.preventDefault()
 
-        return API.saveGoal(this.input.value)
-          .then((goal) => {
-            this.props.store.dispatch(addGoalAction(goal))
-            this.input.value = ''
-          })
-          .catch(() => {
-            alert('An error ocurred. Try again.')
-          })
+        const { store } = this.props
+        store.dispatch(asyncAddGoalAction(
+          this.input.value,
+          () => this.input.value = ''
+        ))
       }
 
       removeItem = (goal) => {
         const { store } = this.props
-        store.dispatch(removeGoalAction(goal.id))
-
-        return API.deleteGoal(goal.id)
-          .catch(() => {
-            store.dispatch(addGoalAction(goal))
-            alert('An error ocurred. Try again.')
-          })
+        store.dispatch(asyncRemoveGoalAction(goal))
       }
 
       render() {
