@@ -132,6 +132,15 @@
       }
     }
 
+    function asyncReceiveDataAction() {
+      return (dispatch) => {
+        return Promise.all([API.fetchTodos(), API.fetchGoals()])
+          .then(([todos, goals]) => {
+            dispatch(receiveDataAction(todos, goals))
+          })
+      }
+    }
+
     // Todos reducer
     function todos(state = [], action) {
       switch(action.type) {
@@ -311,11 +320,7 @@
         const { store } = this.props
 
         store.subscribe(() => this.forceUpdate())
-
-        Promise.all([API.fetchTodos(), API.fetchGoals()])
-          .then(([todos, goals]) => {
-            store.dispatch(receiveDataAction(todos, goals))
-          })
+        store.dispatch(asyncReceiveDataAction())
       }
 
       render () {
