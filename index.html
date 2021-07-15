@@ -107,6 +107,31 @@
       }
     }
 
+    function asyncAddTodoAction(name, callback) {
+      return (dispatch) => {
+        return API.saveTodo(name)
+          .then((todo) => {
+            dispatch(addTodoAction(todo))
+            callback()
+          })
+          .catch(() => {
+            alert('Ann error ocurred. Try again.')
+          })
+      }
+    }
+
+    function asyncToggleTodoAction(todo) {
+      return (dispatch) => {
+        dispatch(toogleTodoAction(todo.id))
+
+        return API.saveTodoToggle(todo.id)
+          .catch(() => {
+            dispatch(toogleTodoAction(todo.id))
+            alert('An error ocurred. Try again.')
+          })
+      }
+    }
+
     // Todos reducer
     function todos(state = [], action) {
       switch(action.type) {
@@ -210,14 +235,11 @@
       addItem = (event) => {
         event.preventDefault()
 
-        return API.saveTodo(this.input.value)
-          .then((todo) => {
-            this.props.store.dispatch(addTodoAction(todo))
-            this.input.value = ''
-          })
-          .catch(() => {
-            alert('Ann error ocurred. Try again.')
-          })
+        const { store } = this.props
+        store.dispatch(asyncAddTodoAction(
+            this.input.value,
+            () => this.input.value = ''
+        ))
       }
 
       removeItem = (todo) => {
@@ -227,13 +249,7 @@
 
       toggleItem = (todo) => {
         const { store } = this.props
-        store.dispatch(toogleTodoAction(todo.id))
-
-        return API.saveTodoToggle(todo.id)
-          .catch(() => {
-            store.dispatch(toogleTodoAction(todo.id))
-            alert('An error ocurred. Try again.')
-          })
+        store.dispatch(asyncToggleTodoAction(todo))
       }
 
       render() {
