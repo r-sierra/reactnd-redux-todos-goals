@@ -244,21 +244,21 @@
       addItem = (event) => {
         event.preventDefault()
 
-        const { store } = this.props
-        store.dispatch(asyncAddTodoAction(
+        const { dispatch } = this.props
+        dispatch(asyncAddTodoAction(
             this.input.value,
             () => this.input.value = ''
         ))
       }
 
       removeItem = (todo) => {
-        const { store } = this.props
-        store.dispatch(asyncRemoveTodoAction(todo))
+        const { dispatch } = this.props
+        dispatch(asyncRemoveTodoAction(todo))
       }
 
       toggleItem = (todo) => {
-        const { store } = this.props
-        store.dispatch(asyncToggleTodoAction(todo))
+        const { dispatch } = this.props
+        dispatch(asyncToggleTodoAction(todo))
       }
 
       render() {
@@ -286,16 +286,16 @@
       addItem = (event) => {
         event.preventDefault()
 
-        const { store } = this.props
-        store.dispatch(asyncAddGoalAction(
+        const { dispatch } = this.props
+        dispatch(asyncAddGoalAction(
           this.input.value,
           () => this.input.value = ''
         ))
       }
 
       removeItem = (goal) => {
-        const { store } = this.props
-        store.dispatch(asyncRemoveGoalAction(goal))
+        const { dispatch } = this.props
+        dispatch(asyncRemoveGoalAction(goal))
       }
 
       render() {
@@ -346,7 +346,7 @@
           {(store) => {
             const { todos } = store.getState()
 
-            return <Todos store={store} todos={todos} />
+            return <Todos dispatch={store.dispatch} todos={todos} />
           }}
           </Context.Consumer>
         )
@@ -360,7 +360,7 @@
           {(store) => {
             const { goals } = store.getState()
 
-            return <Goals store={store} goals={goals} />
+            return <Goals dispatch={store.dispatch} goals={goals} />
           }}
           </Context.Consumer>
         )
