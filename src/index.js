@@ -12,9 +12,9 @@ const store = createStore(reducer, middleware)
 
 ReactDOM.render(
   <React.StrictMode>
-    <ReactRedux.Provider store={store} >
+    <Provider store={store} >
       <ConnectedApp />
-    </ReactRedux.Provider>,
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )

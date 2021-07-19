@@ -2,7 +2,7 @@ import {
   ADD_TODO,
   REMOVE_TODO,
   TOOGLE_TODO
-} from '../action/todo'
+} from '../actions/todos'
 import { RECEIVE_DATA } from '../actions/shared'
 
 export default function todos(state = [], action) {

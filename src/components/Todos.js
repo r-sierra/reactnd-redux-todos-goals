@@ -6,7 +6,7 @@ import {
   asyncRemoveTodoAction,
   asyncToggleTodoAction
 } from '../actions/todos'
-import List from './list'
+import List from './List'
 
 class Todos extends Component {
   addItem = (event) => {
